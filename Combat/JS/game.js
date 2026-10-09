@@ -1,0 +1,1 @@
+const brush = document.getElementById('canva').getContext("2d");
