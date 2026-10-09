@@ -1,9 +1,11 @@
 const screen = document.getElementById('canva');
 const brush = screen.getContext("2d");
 
+let player1 = new Tank(0,0,"img/tank_blue", false);
+
 function draw()
 {
-
+    player1.sketch();
 }
 
 function update()
