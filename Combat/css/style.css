@@ -54,6 +54,7 @@ canvas{
 
 .vl-right {
     position: absolute;
+    z-index: -1;
     top: 0;
     bottom: 0;
     left: 160px;
@@ -63,6 +64,7 @@ canvas{
 .vl-left {
     position: absolute;
     top: 0;
+    z-index: -1;
     bottom: 0;
     right: 160px;
     border-left: 6px solid rgb(253, 182, 51);
