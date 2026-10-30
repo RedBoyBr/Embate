@@ -1,17 +1,20 @@
 const screen = document.querySelector('canvas');
 const brush = screen.getContext('2d');
 
-let player1 = new Tank(50, (screen.height/2 + 20),"img/tank.png", 180, "blue", false);
-let player2 = new Tank((screen.width - 50), (screen.height/2 + 20),"img/tank.png", 0, "red", false);
+let player1 = new Tank(50, (screen.height/2 + 20),"img/tank.png", 180, "blue", false, './sfx/hit.wav', './sfx/engine1.wav');
+let player2 = new Tank((screen.width - 50), (screen.height/2 + 20),"img/tank.png", 0, "red", false, './sfx/hit2.wav', './sfx/engine2.wav');
 
 let hitted = false;
 
 var isPlaying = false;
 let gameover = false;
 
+var ambAudio = new Audio('./sfx/drone_amb.wav');
+
 let mapN = Math.floor(Math.random() * 3);
 
 let wall1, wall2, wall3, wall4;
+
 
 if(mapN == 0)
 {
@@ -42,7 +45,14 @@ screen.addEventListener('pointerdown', function()
 
 screen.addEventListener('keydown', function(e)
 {
-    isPlaying = true;
+    if(!isPlaying)
+    {
+        isPlaying = true;
+        ambAudio.loop = true;
+        ambAudio.volume = 0.6;
+        ambAudio.play();
+    }
+    
 
     if(document.activeElement == screen && ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key))
     {
@@ -53,10 +63,12 @@ screen.addEventListener('keydown', function(e)
         if(e.key == "ArrowUp")
         {
             player2.speed = -2;
+            player2.engineAudio.play();
         }
         if(e.key == "ArrowDown")
         {
             player2.speed = 2;
+            player2.engineAudio.play();
         }
         if(e.key == "ArrowLeft")
         {
@@ -69,15 +81,18 @@ screen.addEventListener('keydown', function(e)
         if(e.key == "Enter")
         {
             player2.shot();
+            
         }
 
         if(e.key == "w")
         {
             player1.speed = -2;
+            player1.engineAudio.play();
         }
         if(e.key == "s")
         {
             player1.speed = 2;
+            player1.engineAudio.play();
         }
         if(e.key == "a")
         {
@@ -90,6 +105,7 @@ screen.addEventListener('keydown', function(e)
         if(e.key == " ")
         {
             player1.shot();
+            
         }
     }
 })
@@ -98,10 +114,12 @@ screen.addEventListener('keyup', function(e)
 {
     if(e.key == "ArrowUp" || e.key == "ArrowDown")
     {
+        player2.engineAudio.pause();
         player2.speed = 0;
     }
     if(e.key == "w" || e.key == "s")
     {
+        player1.engineAudio.pause();
         player1.speed = 0;
     }
 })

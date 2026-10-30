@@ -1,5 +1,5 @@
 class Tank{
-    constructor(x,y,image,angle,color,inv){
+    constructor(x,y,image,angle,color,inv, hitSfx, engineSfx){
         this.type = "tank";
         this.x = x;
         this.y = y;
@@ -17,6 +17,13 @@ class Tank{
         this.tripleShotTimer = null;
         this.hitTimer = null;
         this.hitSpin = false;
+
+        this.isMoving = false;
+
+        this.shootAudio = new Audio('./sfx/shoot.wav');
+        this.hitAudio = new Audio(hitSfx);
+        this.engineAudio = new Audio(engineSfx);
+        this.engineAudio.loop =true;
 
         this.points = 0;
     }
@@ -52,12 +59,24 @@ class Tank{
             {
                 if(((nextX + this.size/2) > obj[i].x - obj[i].width/2 && (nextX - this.size/2) < obj[i].x + obj[i].width/2 && (nextY + this.size/2) > obj[i].y - obj[i].height/2 && (nextY - this.size/2) < obj[i].y + obj[i].height/2))
                 {
+                    this.engineAudio.pause();
                     return;
                 }
             }
 
+            if(this.speed != 0 && this.engineAudio.paused)
+            {
+                this.engineAudio.play();
+            }
+
             this.x = nextX;
             this.y = nextY;
+
+
+        }
+        else
+        {
+            this.engineAudio.pause();
         }
     }
 
@@ -65,6 +84,8 @@ class Tank{
         if (this.hitted) return;
         if (this.bullets.some(b => b.active)) return;
         
+        this.shootAudio.play();
+
         const angles = this.tripleShot ? [-30, 0, 30] : [0];
 
         for (const offset of angles) {
@@ -130,6 +151,7 @@ class Tank{
             if (bullet.collision(obj)) {
                 if (obj.type === "tank") 
                 {
+                    this.hitAudio.play();
                     this.points++;
                     obj.hitted = true;
                     obj.hitSpin = true;
@@ -140,7 +162,10 @@ class Tank{
                     obj.hitTimer = setTimeout(() => {
                         obj.hitted = false;
                         obj.hitSpin = false;
-                        this.hitted = false;
+                        setTimeout(()=>
+                        {
+                            this.hitted = false;
+                        }, 300);
                     }, 1500);
                 }
 
@@ -263,6 +288,8 @@ class Powerups {
         this.width = width;
         this.height = height;
         this.active = true;
+
+        this.powerupAudio = new Audio('./sfx/powerup.wav');
     }
 
     sketch() {
@@ -284,6 +311,7 @@ class Powerups {
 
         if (collided) {
             this.active = false;
+            this.powerupAudio.play();
             return true;
         }
 
