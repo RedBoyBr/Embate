@@ -9,7 +9,7 @@
 html{
     font-family: "Sixtyfour", sans-serif;
     background-color: black;
-    background-image: url("/img/background.png");
+    background-image: url("../img/background.png");
 }
 
 html, body {
