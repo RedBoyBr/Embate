@@ -31,12 +31,14 @@ p{
 }
 
 canvas{
-    background-color: burlywood;
+    background-color: rgb(135, 212, 222);
     margin: auto;
 
+    z-index: 20;
     margin-top: 40px;
     margin-bottom: 40px;
     border: 20px solid rgb(253, 182, 51);
+    outline: none;
 }
 
 #main{
@@ -52,20 +54,21 @@ canvas{
     justify-content: center;
 }
 
-.vl-right {
+.vl-right,
+.vl-left {
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     top: 0;
     bottom: 0;
+    border-left: 8px solid rgb(253, 182, 51);
+    animation: floatLine 4s ease-in-out infinite;
+}
+
+.vl-right {
     left: 160px;
-    border-left: 6px solid rgb(253, 182, 51);
 }
 
 .vl-left {
-    position: absolute;
-    top: 0;
-    z-index: -1;
-    bottom: 0;
     right: 160px;
-    border-left: 6px solid rgb(253, 182, 51);
+    animation-direction: alternate;
 }
